@@ -60,6 +60,10 @@ footer{text-align:center;color:var(--mute);padding:20px 0 50px;font-size:15px}
 .bar .in{max-width:620px;margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center}.bar .in>div{display:flex;align-items:baseline;justify-content:center;gap:10px}
 .bar small{display:inline;opacity:.85;font-size:14px;line-height:1.2}.bar strong{font:800 22px 'Bricolage Grotesque',sans-serif}
 .bar .cta{margin:0;padding:12px 20px;font-size:16px;width:min(260px,72%)}
+.mus{position:fixed;left:calc(14px + env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;width:52px;height:52px;border-radius:50%;border:3px solid var(--card);background:var(--berry);box-shadow:0 8px 20px rgba(0,0,0,.3);display:grid;place-items:center;cursor:pointer;padding:0}
+.mus svg{width:26px;height:26px}.mus .sl{display:block}.mus.on .sl{display:none}
+.mus:focus-visible{outline:3px solid var(--green);outline-offset:3px}
+@media(prefers-reduced-motion:no-preference){.mus.on{animation:mp 1.8s ease-in-out infinite}@keyframes mp{50%{box-shadow:0 0 0 9px rgba(224,64,95,.28)}}}
 </style></head><body>
 <div class="clock" role="timer" aria-label="Jam digital WIB"><strong id="clk">--:--:--</strong><span id="dt"></span></div>
 <header class="hero"><div class="w">
@@ -121,4 +125,12 @@ if(!l.length){document.getElementById("pesan").scrollIntoView({behavior:"smooth"
 var m="Halo Ogura Liby, saya mau pesan:\n"+l.join("\n")+"\nTotal: "+rp(t);
 var n=document.getElementById("note").value.trim();if(n)m+="\nCatatan: "+n;
 window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(m),"_blank")};
+</script>
+<button class="mus" id="mus" type="button" aria-pressed="false" aria-label="Putar musik"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/><line class="sl" x1="4" y1="4" x2="20" y2="20" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg></button>
+<audio id="bgm" src="lagu.mp3" loop preload="none"></audio>
+<script>
+(function(){var a=document.getElementById("bgm"),b=document.getElementById("mus");
+function set(on){b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false");b.setAttribute("aria-label",on?"Matikan musik":"Putar musik")}
+b.onclick=function(){if(a.paused){a.volume=.6;var p=a.play();if(p&&p.then){p.then(function(){set(true)}).catch(function(){set(false)})}else{set(true)}}else{a.pause();set(false)}};
+document.addEventListener("visibilitychange",function(){if(document.hidden&&!a.paused){a.pause();set(false)}})})();
 </script></body></html>
